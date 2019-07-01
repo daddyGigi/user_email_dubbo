@@ -1,0 +1,13 @@
+
+dubbo:
+  consumer:
+    check: false
+    timeout: 30000
+  protocol:
+    port: -1
+  registry:
+    address: zookeeper://192.168.191.191:2181
+  application:
+    name: user_web
+server:
+  port: 8080

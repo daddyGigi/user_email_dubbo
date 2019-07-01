@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="application/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script type="application/javascript">
+        var b = false
+
+        function sub(){
+            return b;
+        }
+
+        function checkCode() {
+            var code = $("#code").val()
+            $.ajax({
+                type:"GET",
+                url:"/user/check?code="+code,
+                success(data){
+                    if (data==1){
+                        b = true
+                        $("#code+span").css("color","green");
+                        $("#code+span").text("验证码正确")
+                    } else {
+                        b = false;
+                        $("#code+span").css("color","red");
+                        $("#code+span").text("验证码错误")
+
+                    }
+                }
+            })
+        }
+
+        $(function () {
+
+            $("#send").click(function () {
+                var email = $("#email").val();
+
+
+                $.ajax({
+                    type:"GET",
+                    url:"/user/sendmail?email="+email,
+                    success(data){
+                        if (data!=null){
+                            alert("发送成功")
+                        } else {
+                            alert("发送失败，请稍后再试")
+                        }
+                    }
+                })
+            });
+
+        });
+    </script>
+</head>
+<body>
+<h1>欢迎注册SBVIP</h1>
+<form action="/user/register" method="post" onsubmit="return sub()">
+姓名：<input type="text" name="name"><br/><br/>
+密码：<input type="text" name="password"><br/><br/>
+    邮箱：<input type="email" name="email" id="email">&nbsp<button  id="send">发送验证码</button><br/>
+请输入验证码：<input type="text" name="code" id="code" onblur="checkCode()"><span></span><br/>
+<input type="submit" value="注册" >
+</form>
+</body>
+</html>
